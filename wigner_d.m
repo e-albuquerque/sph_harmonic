@@ -40,6 +40,10 @@ function d = small_d(j, beta)
 
 	n = size(beta, 1);
 
+	% Initialize the output d-matrix. The first two indices are mp and m,
+	% while the third is the index of the beta angle.
+	d = zeros(2*j+1, 2*j+1, n);
+
 	% We only ever need powers of these cosines and sines, so precompute them
 	% and their squares.
 	co = cos(beta/2);
@@ -47,10 +51,6 @@ function d = small_d(j, beta)
 
 	cosq = co.^2;
 	sisq = si.^2;
-
-	% Initialize the output d-matrix. The first two indices are mp and m,
-	% while the third is the index of the beta angle.
-	d = zeros(2*j+1, 2*j+1, n);
 
 	% To speed up calculations, we keep track of two sets of coefficients
 	% a_{mp,m}, b_{mp,m} as we loop through m and mp. The first are given
