@@ -44,6 +44,20 @@ function d = small_d(j, beta)
 	% while the third is the index of the beta angle.
 	d = zeros(2*j+1, 2*j+1, n);
 
+	% If any of the angles are zero, treat them separately, since these
+	% matrices are just the identity.
+	if any(beta == 0)
+		mask = (beta == 0);
+
+		% Fill with identity for the zero angles.
+		d(:,:,mask) = repmat(eye(2*j+1), [1 1 sum(mask)]);
+
+		% Call the function on the non-zero angles.
+		d(:,:,~mask) = small_d(j, beta(~mask));
+
+		return;
+	end
+
 	% We only ever need powers of these cosines and sines, so precompute them
 	% and their squares.
 	co = cos(beta/2);
